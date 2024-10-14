@@ -1,5 +1,127 @@
 import type { Struct, Schema } from '@strapi/strapi';
 
+export interface ApiOrderDetailOrderDetail extends Struct.CollectionTypeSchema {
+  collectionName: 'order_details';
+  info: {
+    singularName: 'order-detail';
+    pluralName: 'order-details';
+    displayName: 'order';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    shippingAddress: Schema.Attribute.Text & Schema.Attribute.Required;
+    phoneNumber: Schema.Attribute.BigInteger & Schema.Attribute.Required;
+    postalCode: Schema.Attribute.BigInteger & Schema.Attribute.Required;
+    deliveryTime: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
+    order_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::order-item.order-item'
+    >;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::order-detail.order-detail'
+    >;
+  };
+}
+
+export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
+  collectionName: 'order_items';
+  info: {
+    singularName: 'order-item';
+    pluralName: 'order-items';
+    displayName: 'orderItem';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    quantity: Schema.Attribute.Integer & Schema.Attribute.Required;
+    price: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    order: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::order-detail.order-detail'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::order-item.order-item'
+    >;
+  };
+}
+
+export interface ApiProductProduct extends Struct.CollectionTypeSchema {
+  collectionName: 'products';
+  info: {
+    singularName: 'product';
+    pluralName: 'products';
+    displayName: 'product';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    price: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    > &
+      Schema.Attribute.Required;
+    category: Schema.Attribute.String & Schema.Attribute.Required;
+    pagesNum: Schema.Attribute.Integer;
+    author: Schema.Attribute.String;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    publisher: Schema.Attribute.String & Schema.Attribute.Required;
+    language: Schema.Attribute.String & Schema.Attribute.Required;
+    publicationYear: Schema.Attribute.Date & Schema.Attribute.Required;
+    stock: Schema.Attribute.Integer & Schema.Attribute.Required;
+    order_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::order-item.order-item'
+    >;
+    rate: Schema.Attribute.Integer;
+    authorImg: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product.product'
+    >;
+  };
+}
+
 export interface PluginUploadFile extends Struct.CollectionTypeSchema {
   collectionName: 'files';
   info: {
@@ -470,6 +592,10 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    orders: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::order-detail.order-detail'
+    >;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -850,6 +976,9 @@ export interface AdminTransferTokenPermission
 declare module '@strapi/strapi' {
   export module Public {
     export interface ContentTypeSchemas {
+      'api::order-detail.order-detail': ApiOrderDetailOrderDetail;
+      'api::order-item.order-item': ApiOrderItemOrderItem;
+      'api::product.product': ApiProductProduct;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::i18n.locale': PluginI18NLocale;
