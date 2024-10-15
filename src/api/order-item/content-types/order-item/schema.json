@@ -31,6 +31,9 @@
       "relation": "manyToOne",
       "target": "api::order-detail.order-detail",
       "inversedBy": "order_items"
+    },
+    "deliveryPrice": {
+      "type": "decimal"
     }
   }
 }

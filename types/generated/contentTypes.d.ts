@@ -59,6 +59,7 @@ export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
       'manyToOne',
       'api::order-detail.order-detail'
     >;
+    deliveryPrice: Schema.Attribute.Decimal;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -107,6 +108,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     >;
     rate: Schema.Attribute.Integer;
     authorImg: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    discount: Schema.Attribute.Decimal;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
