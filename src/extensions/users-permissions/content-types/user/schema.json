@@ -70,6 +70,12 @@
       "relation": "oneToMany",
       "target": "api::order-detail.order-detail",
       "mappedBy": "users_permissions_user"
+    },
+    "wishlists": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::wishlist.wishlist",
+      "mappedBy": "users_permissions_user"
     }
   }
 }
