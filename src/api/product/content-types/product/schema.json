@@ -31,15 +31,13 @@
         "audios"
       ]
     },
-    "category": {
-      "type": "string",
+    "pagesNum": {
+      "type": "integer",
       "required": true
     },
-    "pagesNum": {
-      "type": "integer"
-    },
     "author": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "description": {
       "type": "text",
@@ -68,13 +66,13 @@
       "mappedBy": "product"
     },
     "rate": {
-      "type": "integer",
-      "required": false
+      "type": "decimal",
+      "required": true
     },
     "authorImg": {
       "type": "media",
       "multiple": false,
-      "required": false,
+      "required": true,
       "allowedTypes": [
         "images",
         "files",
@@ -83,7 +81,30 @@
       ]
     },
     "discount": {
-      "type": "decimal"
+      "type": "decimal",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Fantacy",
+        "Thriller",
+        "Mystery",
+        "Horror",
+        "Romance",
+        "Cooking",
+        "History",
+        "Art",
+        "Self-help",
+        "Travel",
+        "Business",
+        "Health",
+        "Comedy",
+        "Sport",
+        "Children",
+        "Science"
+      ],
+      "required": true
     }
   }
 }
