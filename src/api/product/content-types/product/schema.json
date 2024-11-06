@@ -59,12 +59,6 @@
       "type": "integer",
       "required": true
     },
-    "order_items": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::order-item.order-item",
-      "mappedBy": "product"
-    },
     "rate": {
       "type": "decimal",
       "required": true

@@ -470,11 +470,9 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    orders: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::order-detail.order-detail'
-    >;
     wishlists: Schema.Attribute.Relation<'oneToMany', 'api::wishlist.wishlist'>;
+    orders: Schema.Attribute.Relation<'oneToMany', 'api::order.order'>;
+    cart: Schema.Attribute.Relation<'oneToOne', 'api::cart.cart'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -490,11 +488,40 @@ export interface PluginUsersPermissionsUser
   };
 }
 
-export interface ApiOrderDetailOrderDetail extends Struct.CollectionTypeSchema {
-  collectionName: 'order_details';
+export interface ApiCartCart extends Struct.CollectionTypeSchema {
+  collectionName: 'carts';
   info: {
-    singularName: 'order-detail';
-    pluralName: 'order-details';
+    singularName: 'cart';
+    pluralName: 'carts';
+    displayName: 'cart';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
+    users_permissions_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::cart.cart'>;
+  };
+}
+
+export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
+  collectionName: 'orders';
+  info: {
+    singularName: 'order';
+    pluralName: 'orders';
     displayName: 'order';
     description: '';
   };
@@ -502,19 +529,27 @@ export interface ApiOrderDetailOrderDetail extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    shippingAddress: Schema.Attribute.Text & Schema.Attribute.Required;
-    phoneNumber: Schema.Attribute.BigInteger & Schema.Attribute.Required;
-    postalCode: Schema.Attribute.BigInteger & Schema.Attribute.Required;
-    deliveryTime: Schema.Attribute.DateTime & Schema.Attribute.Required;
-    description: Schema.Attribute.Text;
-    order_items: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::order-item.order-item'
-    >;
+    cart: Schema.Attribute.Relation<'oneToOne', 'api::cart.cart'>;
     users_permissions_user: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.user'
     >;
+    address: Schema.Attribute.Text & Schema.Attribute.Required;
+    phoneNumber: Schema.Attribute.BigInteger & Schema.Attribute.Required;
+    postalCode: Schema.Attribute.BigInteger & Schema.Attribute.Required;
+    orderStatus: Schema.Attribute.Enumeration<
+      [
+        'pending',
+        'processing',
+        'shipped',
+        'out for delivery',
+        'delivered',
+        'canceled',
+        'returned',
+        'refunded',
+      ]
+    > &
+      Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -523,45 +558,7 @@ export interface ApiOrderDetailOrderDetail extends Struct.CollectionTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::order-detail.order-detail'
-    >;
-  };
-}
-
-export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
-  collectionName: 'order_items';
-  info: {
-    singularName: 'order-item';
-    pluralName: 'order-items';
-    displayName: 'orderItem';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    quantity: Schema.Attribute.Integer & Schema.Attribute.Required;
-    price: Schema.Attribute.Decimal & Schema.Attribute.Required;
-    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
-    order: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::order-detail.order-detail'
-    >;
-    deliveryPrice: Schema.Attribute.Decimal;
-    createdAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    publishedAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::order-item.order-item'
-    >;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'>;
   };
 }
 
@@ -591,10 +588,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     language: Schema.Attribute.String & Schema.Attribute.Required;
     publicationYear: Schema.Attribute.Date & Schema.Attribute.Required;
     stock: Schema.Attribute.Integer & Schema.Attribute.Required;
-    order_items: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::order-item.order-item'
-    >;
     rate: Schema.Attribute.Decimal & Schema.Attribute.Required;
     authorImg: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
@@ -1044,8 +1037,8 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'api::order-detail.order-detail': ApiOrderDetailOrderDetail;
-      'api::order-item.order-item': ApiOrderItemOrderItem;
+      'api::cart.cart': ApiCartCart;
+      'api::order.order': ApiOrderOrder;
       'api::product.product': ApiProductProduct;
       'api::wishlist.wishlist': ApiWishlistWishlist;
       'admin::permission': AdminPermission;
