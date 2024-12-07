@@ -99,6 +99,12 @@
         "Science"
       ],
       "required": true
+    },
+    "cart_item": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cart-item.cart-item",
+      "mappedBy": "product"
     }
   }
 }
