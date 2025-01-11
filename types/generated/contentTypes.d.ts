@@ -509,6 +509,7 @@ export interface ApiCartCart extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::cart-item.cart-item'
     >;
+    order: Schema.Attribute.Relation<'oneToOne', 'api::order.order'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -565,7 +566,6 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    cart: Schema.Attribute.Relation<'oneToOne', 'api::cart.cart'>;
     users_permissions_user: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.user'
@@ -575,7 +575,6 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     postalCode: Schema.Attribute.BigInteger & Schema.Attribute.Required;
     orderStatus: Schema.Attribute.Enumeration<
       [
-        'pending',
         'processing',
         'shipped',
         'out for delivery',
@@ -585,7 +584,14 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
         'refunded',
       ]
     > &
-      Schema.Attribute.Required;
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'processing'>;
+    emailAddress: Schema.Attribute.Email & Schema.Attribute.Required;
+    cart: Schema.Attribute.Relation<'oneToOne', 'api::cart.cart'>;
+    stripePaymentId: Schema.Attribute.String;
+    paymentStatus: Schema.Attribute.Enumeration<['paid', 'failed', 'pending']> &
+      Schema.Attribute.DefaultTo<'pending'>;
+    payAmount: Schema.Attribute.BigInteger;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;

@@ -12,11 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "cart": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::cart.cart"
-    },
     "users_permissions_user": {
       "type": "relation",
       "relation": "manyToOne",
@@ -38,7 +33,6 @@
     "orderStatus": {
       "type": "enumeration",
       "enum": [
-        "pending",
         "processing",
         "shipped",
         "out for delivery",
@@ -47,7 +41,32 @@
         "returned",
         "refunded"
       ],
+      "required": true,
+      "default": "processing"
+    },
+    "emailAddress": {
+      "type": "email",
       "required": true
+    },
+    "cart": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cart.cart"
+    },
+    "stripePaymentId": {
+      "type": "string"
+    },
+    "paymentStatus": {
+      "type": "enumeration",
+      "enum": [
+        "paid",
+        "failed",
+        "pending"
+      ],
+      "default": "pending"
+    },
+    "payAmount": {
+      "type": "biginteger"
     }
   }
 }
