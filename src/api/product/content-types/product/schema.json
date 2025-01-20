@@ -61,7 +61,8 @@
     },
     "rate": {
       "type": "decimal",
-      "required": true
+      "required": true,
+      "default": 0
     },
     "authorImg": {
       "type": "media",

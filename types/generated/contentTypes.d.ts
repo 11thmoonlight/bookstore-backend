@@ -630,7 +630,9 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     language: Schema.Attribute.String & Schema.Attribute.Required;
     publicationYear: Schema.Attribute.Date & Schema.Attribute.Required;
     stock: Schema.Attribute.Integer & Schema.Attribute.Required;
-    rate: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    rate: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<0>;
     authorImg: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     > &
