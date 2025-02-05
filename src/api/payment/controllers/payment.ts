@@ -39,8 +39,8 @@ module.exports = {
           },
         ],
         mode: "payment",
-        success_url: "http://localhost:3000/profile",
-        cancel_url: "http://localhost:3000/profile",
+        success_url: "http://localhost:3000/order",
+        cancel_url: "http://localhost:3000/order",
       });
 
       return ctx.send({ id: session.id });
