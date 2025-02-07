@@ -39,7 +39,8 @@ module.exports = {
           },
         ],
         mode: "payment",
-        success_url: "http://localhost:3000/order",
+        success_url:
+          "http://localhost:3000/order?session_id={CHECKOUT_SESSION_ID}",
         cancel_url: "http://localhost:3000/order",
       });
 
