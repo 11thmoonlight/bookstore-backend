@@ -1,4 +1,5 @@
 "use strict";
+
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 module.exports = {
@@ -32,15 +33,16 @@ module.exports = {
           {
             price_data: {
               currency: "usd",
-              product_data: { name: "Sample Product" },
+              product_data: {
+                name: "Sample Product",
+              },
               unit_amount: amount,
             },
             quantity: 1,
           },
         ],
         mode: "payment",
-        success_url:
-          "http://localhost:3000/order?session_id={CHECKOUT_SESSION_ID}",
+        success_url: "http://localhost:3000/order",
         cancel_url: "http://localhost:3000/order",
       });
 
