@@ -56,15 +56,6 @@
     "stripePaymentId": {
       "type": "string"
     },
-    "paymentStatus": {
-      "type": "enumeration",
-      "enum": [
-        "paid",
-        "failed",
-        "pending"
-      ],
-      "default": "pending"
-    },
     "payAmount": {
       "type": "biginteger"
     }

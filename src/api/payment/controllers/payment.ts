@@ -1,55 +1,39 @@
-"use strict";
-
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 module.exports = {
-  async createPaymentIntent(ctx) {
+  async createSession(ctx) {
     try {
-      const { amount, currency } = ctx.request.body;
+      const { totalPrice, shippingInfo } = ctx.request.body;
 
-      if (!amount || !currency) {
-        return ctx.badRequest("Amount and currency are required.");
+      if (!totalPrice || totalPrice <= 0) {
+        return ctx.badRequest("مبلغ کل نامعتبر است.");
       }
 
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount,
-        currency,
-      });
-
-      return ctx.send({ clientSecret: paymentIntent.client_secret });
-    } catch (error) {
-      console.error("Error creating payment intent:", error);
-      return ctx.internalServerError("Failed to create payment intent.");
-    }
-  },
-
-  async createCheckoutSession(ctx) {
-    try {
-      const { amount } = ctx.request.body;
-
+      // ایجاد جلسه پرداخت در Stripe با مبلغ کل
       const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        line_items: [
-          {
-            price_data: {
-              currency: "usd",
-              product_data: {
-                name: "Sample Product",
-              },
-              unit_amount: amount,
+        payment_method_types: ['card'],
+        line_items: [{
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'Order Total',
             },
-            quantity: 1,
+            unit_amount: Math.round(totalPrice * 100), // تبدیل به سنت
           },
-        ],
-        mode: "payment",
-        success_url: "http://localhost:3000/order",
-        cancel_url: "http://localhost:3000/order",
+          quantity: 1,
+        }],
+        mode: 'payment',
+        success_url: `http://localhost:3000/cart/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `http://localhost:3000/cart/checkout/cancel`,
+        metadata: {
+          shippingInfo: JSON.stringify(shippingInfo),
+        },
       });
 
-      return ctx.send({ id: session.id });
+      return ctx.send({ sessionId: session.id });
     } catch (error) {
-      console.error("Error creating checkout session:", error);
-      return ctx.internalServerError("Failed to create checkout session.");
+      console.error("خطا در ایجاد جلسه پرداخت:", error);
+      return ctx.badRequest('خطا در ایجاد جلسه پرداخت', { error });
     }
   },
 };

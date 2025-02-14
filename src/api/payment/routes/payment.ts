@@ -2,20 +2,10 @@ module.exports = {
   routes: [
     {
       method: "POST",
-      path: "/create-payment-intent",
-      handler: "payment.createPaymentIntent",
+      path: "/payment",
+      handler: "payment.createSession",
       config: {
-        policies: [],
-        middlewares: [],
-      },
-    },
-    {
-      method: "POST",
-      path: "/create-checkout-session",
-      handler: "payment.createCheckoutSession",
-      config: {
-        policies: [],
-        middlewares: [],
+        auth: false,
       },
     },
   ],
