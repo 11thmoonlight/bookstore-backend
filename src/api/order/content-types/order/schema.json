@@ -33,31 +33,32 @@
     "orderStatus": {
       "type": "enumeration",
       "enum": [
+        "order placed",
         "processing",
         "shipped",
-        "out for delivery",
         "delivered",
         "canceled",
         "returned",
         "refunded"
       ],
       "required": true,
-      "default": "processing"
+      "default": "order placed"
     },
     "emailAddress": {
       "type": "email",
       "required": true
-    },
-    "cart": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::cart.cart"
     },
     "stripePaymentId": {
       "type": "string"
     },
     "payAmount": {
       "type": "biginteger"
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order-item.order-item",
+      "mappedBy": "order"
     }
   }
 }

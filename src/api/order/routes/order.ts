@@ -1,4 +1,13 @@
+// import { factories } from "@strapi/strapi";
 
-import { factories } from "@strapi/strapi";
+// export default factories.createCoreRouter("api::order.order");
 
-export default factories.createCoreRouter("api::order.order");
+module.exports = {
+  routes: [
+    {
+      method: "POST",
+      path: "/orders/place",
+      handler: "order.placeOrder",
+    },
+  ],
+};

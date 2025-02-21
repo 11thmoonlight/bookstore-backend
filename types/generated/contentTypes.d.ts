@@ -575,9 +575,9 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     postalCode: Schema.Attribute.BigInteger & Schema.Attribute.Required;
     orderStatus: Schema.Attribute.Enumeration<
       [
+        'order placed',
         'processing',
         'shipped',
-        'out for delivery',
         'delivered',
         'canceled',
         'returned',
@@ -585,11 +585,11 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       ]
     > &
       Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'processing'>;
+      Schema.Attribute.DefaultTo<'order placed'>;
     emailAddress: Schema.Attribute.Email & Schema.Attribute.Required;
-    cart: Schema.Attribute.Relation<'oneToOne', 'api::cart.cart'>;
     stripePaymentId: Schema.Attribute.String;
     payAmount: Schema.Attribute.BigInteger;
+    items: Schema.Attribute.Relation<'oneToMany', 'api::order-item.order-item'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -599,6 +599,36 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'>;
+  };
+}
+
+export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
+  collectionName: 'order_items';
+  info: {
+    singularName: 'order-item';
+    pluralName: 'order-items';
+    displayName: 'Order Item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    order: Schema.Attribute.Relation<'manyToOne', 'api::order.order'>;
+    product: Schema.Attribute.Relation<'oneToOne', 'api::product.product'>;
+    quantity: Schema.Attribute.Integer & Schema.Attribute.Required;
+    price: Schema.Attribute.BigInteger & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::order-item.order-item'
+    >;
   };
 }
 
@@ -1086,6 +1116,7 @@ declare module '@strapi/strapi' {
       'api::cart.cart': ApiCartCart;
       'api::cart-item.cart-item': ApiCartItemCartItem;
       'api::order.order': ApiOrderOrder;
+      'api::order-item.order-item': ApiOrderItemOrderItem;
       'api::product.product': ApiProductProduct;
       'api::wishlist.wishlist': ApiWishlistWishlist;
       'admin::permission': AdminPermission;
