@@ -54,11 +54,11 @@
     "payAmount": {
       "type": "biginteger"
     },
-    "items": {
+    "products": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::order-item.order-item",
-      "mappedBy": "order"
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "inversedBy": "orders"
     }
   }
 }

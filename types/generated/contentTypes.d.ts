@@ -589,7 +589,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     emailAddress: Schema.Attribute.Email & Schema.Attribute.Required;
     stripePaymentId: Schema.Attribute.String;
     payAmount: Schema.Attribute.BigInteger;
-    items: Schema.Attribute.Relation<'oneToMany', 'api::order-item.order-item'>;
+    products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -599,36 +599,6 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'>;
-  };
-}
-
-export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
-  collectionName: 'order_items';
-  info: {
-    singularName: 'order-item';
-    pluralName: 'order-items';
-    displayName: 'Order Item';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    order: Schema.Attribute.Relation<'manyToOne', 'api::order.order'>;
-    product: Schema.Attribute.Relation<'oneToOne', 'api::product.product'>;
-    quantity: Schema.Attribute.Integer & Schema.Attribute.Required;
-    price: Schema.Attribute.BigInteger & Schema.Attribute.Required;
-    createdAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    publishedAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::order-item.order-item'
-    >;
   };
 }
 
@@ -691,6 +661,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'oneToOne',
       'api::cart-item.cart-item'
     >;
+    orders: Schema.Attribute.Relation<'manyToMany', 'api::order.order'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -1116,7 +1087,6 @@ declare module '@strapi/strapi' {
       'api::cart.cart': ApiCartCart;
       'api::cart-item.cart-item': ApiCartItemCartItem;
       'api::order.order': ApiOrderOrder;
-      'api::order-item.order-item': ApiOrderItemOrderItem;
       'api::product.product': ApiProductProduct;
       'api::wishlist.wishlist': ApiWishlistWishlist;
       'admin::permission': AdminPermission;
