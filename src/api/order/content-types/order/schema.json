@@ -23,11 +23,11 @@
       "required": true
     },
     "phoneNumber": {
-      "type": "biginteger",
+      "type": "string",
       "required": true
     },
     "postalCode": {
-      "type": "biginteger",
+      "type": "string",
       "required": true
     },
     "orderStatus": {
@@ -54,11 +54,11 @@
     "payAmount": {
       "type": "biginteger"
     },
-    "products": {
+    "cart_items": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::product.product",
-      "inversedBy": "orders"
+      "relation": "oneToMany",
+      "target": "api::cart-item.cart-item",
+      "mappedBy": "order"
     }
   }
 }

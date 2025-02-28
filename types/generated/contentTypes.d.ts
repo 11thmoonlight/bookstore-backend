@@ -441,7 +441,6 @@ export interface PluginUsersPermissionsUser
     displayName: 'User';
   };
   options: {
-    timestamps: true;
     draftAndPublish: false;
   };
   attributes: {
@@ -497,10 +496,9 @@ export interface ApiCartCart extends Struct.CollectionTypeSchema {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
-    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     users_permissions_user: Schema.Attribute.Relation<
       'oneToOne',
       'plugin::users-permissions.user'
@@ -509,7 +507,6 @@ export interface ApiCartCart extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::cart-item.cart-item'
     >;
-    order: Schema.Attribute.Relation<'oneToOne', 'api::order.order'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -531,7 +528,7 @@ export interface ApiCartItemCartItem extends Struct.CollectionTypeSchema {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     cart: Schema.Attribute.Relation<'manyToOne', 'api::cart.cart'>;
@@ -539,6 +536,7 @@ export interface ApiCartItemCartItem extends Struct.CollectionTypeSchema {
     quantity: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<1>;
+    order: Schema.Attribute.Relation<'manyToOne', 'api::order.order'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -571,8 +569,8 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       'plugin::users-permissions.user'
     >;
     address: Schema.Attribute.Text & Schema.Attribute.Required;
-    phoneNumber: Schema.Attribute.BigInteger & Schema.Attribute.Required;
-    postalCode: Schema.Attribute.BigInteger & Schema.Attribute.Required;
+    phoneNumber: Schema.Attribute.String & Schema.Attribute.Required;
+    postalCode: Schema.Attribute.String & Schema.Attribute.Required;
     orderStatus: Schema.Attribute.Enumeration<
       [
         'order placed',
@@ -589,7 +587,10 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     emailAddress: Schema.Attribute.Email & Schema.Attribute.Required;
     stripePaymentId: Schema.Attribute.String;
     payAmount: Schema.Attribute.BigInteger;
-    products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
+    cart_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::cart-item.cart-item'
+    >;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -661,7 +662,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'oneToOne',
       'api::cart-item.cart-item'
     >;
-    orders: Schema.Attribute.Relation<'manyToMany', 'api::order.order'>;
+    wishlist: Schema.Attribute.Relation<'manyToOne', 'api::wishlist.wishlist'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -686,14 +687,14 @@ export interface ApiWishlistWishlist extends Struct.CollectionTypeSchema {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
-    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     users_permissions_user: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.user'
     >;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;

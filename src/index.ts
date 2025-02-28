@@ -16,5 +16,30 @@ export default {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap(/* { strapi }: { strapi: Core.Strapi } */) {},
+
+  async bootstrap({ strapi }) {
+    strapi.db.lifecycles.subscribe({
+      models: ["plugin::users-permissions.user"],
+      async afterCreate(event) {
+        const { result } = event;
+        const userId = result.id;
+
+        console.log(`User created: ${userId}`);
+
+        await strapi.db.query("api::cart.cart").create({
+          data: {
+            users_permissions_user: userId,
+          },
+        });
+
+        await strapi.db.query("api::wishlist.wishlist").create({
+          data: {
+            users_permissions_user: userId,
+          },
+        });
+
+        console.log(`Cart & Wishlist created for user ${userId}`);
+      },
+    });
+  },
 };

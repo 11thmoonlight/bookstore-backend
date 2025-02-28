@@ -24,7 +24,12 @@
       "type": "media",
       "multiple": true,
       "required": true,
-      "allowedTypes": ["images", "files", "videos", "audios"]
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     },
     "pagesNum": {
       "type": "integer",
@@ -63,7 +68,12 @@
       "type": "media",
       "multiple": false,
       "required": true,
-      "allowedTypes": ["images", "files", "videos", "audios"]
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     },
     "discount": {
       "type": "decimal",
@@ -97,11 +107,11 @@
       "target": "api::cart-item.cart-item",
       "mappedBy": "product"
     },
-    "orders": {
+    "wishlist": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::order.order",
-      "mappedBy": "products"
+      "relation": "manyToOne",
+      "target": "api::wishlist.wishlist",
+      "inversedBy": "products"
     }
   }
 }

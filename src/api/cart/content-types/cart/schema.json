@@ -8,15 +8,10 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "products": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product"
-    },
     "users_permissions_user": {
       "type": "relation",
       "relation": "oneToOne",
@@ -28,11 +23,6 @@
       "relation": "oneToMany",
       "target": "api::cart-item.cart-item",
       "mappedBy": "cart"
-    },
-    "order": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::order.order"
     }
   }
 }
