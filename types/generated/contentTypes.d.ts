@@ -586,7 +586,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       Schema.Attribute.DefaultTo<'order placed'>;
     emailAddress: Schema.Attribute.Email & Schema.Attribute.Required;
     stripePaymentId: Schema.Attribute.String;
-    payAmount: Schema.Attribute.BigInteger;
+    payAmount: Schema.Attribute.Decimal;
     cart_items: Schema.Attribute.Relation<
       'oneToMany',
       'api::cart-item.cart-item'

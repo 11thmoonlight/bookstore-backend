@@ -52,7 +52,7 @@
       "type": "string"
     },
     "payAmount": {
-      "type": "biginteger"
+      "type": "decimal"
     },
     "cart_items": {
       "type": "relation",
