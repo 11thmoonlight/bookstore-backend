@@ -15,11 +15,6 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         populate: ["cart_items", "cart_items.product", "products"],
       });
 
-      console.log(
-        "cartmap",
-        cart.cart_items.map((item) => item.id)
-      );
-
       if (!cart || !cart.cart_items.length) {
         return ctx.badRequest("Your cart is empty.");
       }
@@ -28,8 +23,6 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         (total, item) => total + item.product.price * item.quantity,
         0
       );
-
-      console.log("pay", payAmount);
 
       const order = await strapi.entityService.create("api::order.order", {
         data: {
@@ -46,8 +39,6 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           },
         },
       });
-
-      console.log("order", order);
 
       await Promise.all(
         cart.cart_items.map(async (item) => {

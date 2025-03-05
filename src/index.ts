@@ -24,8 +24,6 @@ export default {
         const { result } = event;
         const userId = result.id;
 
-        console.log(`User created: ${userId}`);
-
         await strapi.db.query("api::cart.cart").create({
           data: {
             users_permissions_user: userId,
@@ -37,8 +35,6 @@ export default {
             users_permissions_user: userId,
           },
         });
-
-        console.log(`Cart & Wishlist created for user ${userId}`);
       },
     });
   },
