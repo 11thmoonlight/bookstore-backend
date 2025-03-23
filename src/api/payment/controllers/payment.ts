@@ -25,8 +25,8 @@ module.exports = {
           },
         ],
         mode: "payment",
-        success_url: `http://https://hinode.vercel.app/cart/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `http://https://hinode.vercel.app/cart/checkout/cancel`,
+        success_url: `https://hinode.vercel.app/cart/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `https://hinode.vercel.app/cart/checkout/cancel`,
         metadata: {
           shippingInfo: JSON.stringify(shippingInfo),
         },
