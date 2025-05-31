@@ -1,61 +1,96 @@
-# 🚀 Getting started with Strapi
+# 📚 Bookstore Backend – Strapi v5
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
-
-### `develop`
-
-Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
-
-```
-npm run develop
-# or
-yarn develop
-```
-
-### `start`
-
-Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-start)
-
-```
-npm run start
-# or
-yarn start
-```
-
-### `build`
-
-Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build)
-
-```
-npm run build
-# or
-yarn build
-```
-
-## ⚙️ Deployment
-
-Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
-
-```
-yarn strapi deploy
-```
-
-## 📚 Learn more
-
-- [Resource center](https://strapi.io/resource-center) - Strapi resource center.
-- [Strapi documentation](https://docs.strapi.io) - Official Strapi documentation.
-- [Strapi tutorials](https://strapi.io/tutorials) - List of tutorials made by the core team and the community.
-- [Strapi blog](https://strapi.io/blog) - Official Strapi blog containing articles made by the Strapi team and the community.
-- [Changelog](https://strapi.io/changelog) - Find out about the Strapi product updates, new features and general improvements.
-
-Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/strapi). Your feedback and contributions are welcome!
-
-## ✨ Community
-
-- [Discord](https://discord.strapi.io) - Come chat with the Strapi community including the core team.
-- [Forum](https://forum.strapi.io/) - Place to discuss, ask questions and find answers, show your Strapi project and get feedback or just talk with other Community members.
-- [Awesome Strapi](https://github.com/strapi/awesome-strapi) - A curated list of awesome things related to Strapi.
+This is the backend for a bookstore website, built with **[Strapi v5](https://strapi.io/)** and written in **TypeScript**.  
+It uses **SQLite** for development and includes **Stripe** integration for payment processing.
 
 ---
 
-<sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+## 🚀 Getting Started
+
+Install dependencies:
+
+```bash
+yarn install
+# or
+npm install
+```
+
+Start the development server:
+
+```bash
+yarn develop
+# or
+npm run develop
+```
+
+The admin panel will be available at: [http://localhost:1337/admin](http://localhost:1337/admin)
+
+---
+
+## 🛠️ Scripts
+
+| Script         | Description                          |
+|----------------|--------------------------------------|
+| `yarn develop` | Start the app in development mode    |
+| `yarn build`   | Build the admin panel                |
+| `yarn start`   | Start the app in production mode     |
+| `yarn deploy`  | Deploy the app (Strapi Cloud plugin) |
+
+---
+
+## ⚙️ Environment Configuration
+
+Create a `.env` file in the root directory based on the example below:
+
+```env
+# Server
+HOST=0.0.0.0
+PORT=1337
+
+# Secrets
+APP_KEYS=your_app_keys
+API_TOKEN_SALT=your_api_token_salt
+ADMIN_JWT_SECRET=your_admin_jwt
+TRANSFER_TOKEN_SALT=your_transfer_token_salt
+JWT_SECRET=your_jwt_secret
+
+# Database (SQLite by default)
+DATABASE_CLIENT=sqlite
+DATABASE_FILENAME=.tmp/data.db
+
+# Stripe
+NEXT_PUBLIC_STRIPE_PUBLIC_KEY=your_stripe_public_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_API_KEY=your_stripe_secret_key
+```
+
+> You can copy `.env.example` and rename it to `.env`.
+
+---
+
+## 🧩 Plugins Used
+
+- `@strapi/plugin-users-permissions`
+- `@strapi/plugin-cloud`
+- `stripe`
+
+---
+
+## 📦 Deployment
+
+This project is deployed on **[Railway](https://railway.app/)**. You can also deploy to other platforms following the official [Strapi deployment guide](https://docs.strapi.io/dev-docs/deployment).
+
+---
+
+## 📚 Learn More
+
+- [Strapi Documentation](https://docs.strapi.io/)
+- [Strapi CLI Commands](https://docs.strapi.io/dev-docs/cli)
+- [Strapi Deployment Options](https://docs.strapi.io/dev-docs/deployment)
+- [Stripe Documentation](https://stripe.com/docs)
+
+---
+
+## 🧑‍💻 Author
+
+Made with ❤️ by [Your Name or GitHub Profile](https://github.com/yourusername)
