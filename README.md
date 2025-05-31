@@ -23,7 +23,7 @@ yarn develop
 npm run develop
 ```
 
-The admin panel will be available at: [http://localhost:1337/admin](http://localhost:1337/admin)
+The admin panel will be available at: [backend-production-dd5c.up.railway.app](backend-production-dd5c.up.railway.app)
 
 ---
 
