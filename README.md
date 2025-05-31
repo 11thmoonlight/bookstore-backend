@@ -31,10 +31,10 @@ The admin panel will be available at: [backend-production-dd5c.up.railway.app](b
 
 | Script         | Description                          |
 |----------------|--------------------------------------|
-| `yarn develop` | Start the app in development mode    |
-| `yarn build`   | Build the admin panel                |
-| `yarn start`   | Start the app in production mode     |
-| `yarn deploy`  | Deploy the app (Strapi Cloud plugin) |
+| `npm develop` | Start the app in development mode    |
+| `npm build`   | Build the admin panel                |
+| `npm start`   | Start the app in production mode     |
+| `npm deploy`  | Deploy the app (Strapi Cloud plugin) |
 
 ---
 
