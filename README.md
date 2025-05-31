@@ -93,4 +93,4 @@ This project is deployed on **[Railway](https://railway.app/)**. You can also de
 
 ## 🧑‍💻 Author
 
-Made with ❤️ by [Your Name or GitHub Profile](https://github.com/yourusername)
+Made with ❤️ by Aida (https://github.com/11thmoonlight)
